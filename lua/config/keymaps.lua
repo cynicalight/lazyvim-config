@@ -6,3 +6,5 @@ vim.keymap.set("n", "<leader>ft", function()
   -- win = { style = "float" } 是默认值，这里显式写出来以防万一
   Snacks.terminal(nil, { cwd = LazyVim.root(), win = { style = "float" } })
 end, { desc = "Terminal (Root Dir)" })
+
+vim.keymap.set("t", "jk", "<C-\\><C-n>", { desc = "Exit terminal mode" })
