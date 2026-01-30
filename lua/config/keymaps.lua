@@ -8,3 +8,18 @@ vim.keymap.set("n", "<leader>ft", function()
 end, { desc = "Terminal (Root Dir)" })
 
 vim.keymap.set("t", "jk", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+-- 将当前行的错误信息复制到系统剪贴板
+vim.keymap.set("n", "<leader>ce", function()
+  -- 获取当前行的所有诊断信息
+  local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line(".") - 1 })
+  if #diagnostics > 0 then
+    -- 取第一个报错信息
+    local message = diagnostics[1].message
+    -- 写入系统剪贴板 (+)
+    vim.fn.setreg("+", message)
+    print("📋 报错已复制: " .. message)
+  else
+    print("✅ 当前行没有报错")
+  end
+end, { desc = "Copy Error to Clipboard" })
