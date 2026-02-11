@@ -14,7 +14,7 @@ return {
         enabled = "wezterm",
         wezterm = {
           direction = "left", -- 放在左边
-          percent = 30, -- 宽度占 30%
+          percent = 40, -- 宽度占 30%
           close_on_exit = true, -- 退出 opencode 时关闭面板
         },
       },

@@ -23,3 +23,16 @@ vim.keymap.set("n", "<leader>ce", function()
     print("✅ 当前行没有报错")
   end
 end, { desc = "Copy Error to Clipboard" })
+
+vim.keymap.set("n", "<leader>bP", "<Cmd>BufferLineTogglePin<CR>", { desc = "Toggle Pin" })
+-- 2. 🛡️ 核心步骤：彻底删除旧的 <leader>bp 映射
+-- 使用 pcall 避免报错，删掉它，给 DAP 腾出位置
+vim.keymap.set("n", "<leader>bp", function()
+  -- 使用 pcall 防止插件没装时报错，虽然肯定装了
+  local ok, xcodebuild = pcall(require, "xcodebuild.integrations.dap")
+  if ok then
+    xcodebuild.toggle_breakpoint()
+  else
+    vim.notify("Xcodebuild 插件未加载", vim.log.levels.ERROR)
+  end
+end, { desc = "Toggle Breakpoint" })
