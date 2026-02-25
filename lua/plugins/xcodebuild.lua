@@ -15,7 +15,6 @@ return {
       },
     })
 
-    -- 绑定快捷键 (最常用的功能)
     local keymap = vim.keymap.set
     keymap("n", "<leader>z", "", { desc = "Xcodebuild" }) -- 创建一个组前缀
     keymap("n", "<leader>zp", "<cmd>XcodebuildPicker<cr>", { desc = "Show Xcode Picker" })
