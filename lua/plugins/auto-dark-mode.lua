@@ -1,6 +1,7 @@
 return {
     {
         "f-person/auto-dark-mode.nvim",
+        enabled = vim.fn.has("mac") == 1,
         opts = {
             update_interval = 1000,
             set_dark_mode = function()
@@ -9,7 +10,7 @@ return {
             end,
             set_light_mode = function()
                 vim.opt.background = "light"
-                vim.cmd("colorscheme rose-pine-dawn")
+                vim.cmd("colorscheme gruvbox-material")
             end,
         },
     },
