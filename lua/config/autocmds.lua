@@ -6,6 +6,16 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 
+-- Disable spell check for markdown (override LazyVim's wrap_spell)
+vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("lazyvim_wrap_spell", { clear = true }),
+  pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
+  callback = function()
+    vim.opt_local.wrap = true
+  end,
+})
+
 -- 1. 开启自动读取外部变更
 vim.o.autoread = true
 

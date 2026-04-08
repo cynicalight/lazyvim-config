@@ -3,7 +3,7 @@ return {
   dir = vim.fn.stdpath("config") .. "/lua",
   config = function()
     require("daily-note").setup({
-      notes_dir = vim.fn.expand("$OBSIDIAN_HOME/Personal/Daily/"),
+      notes_dir = vim.fn.expand("$OBSIDIAN_HOME/Personal/Diary/"),
       enable_quote = true,
     })
   end,

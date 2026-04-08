@@ -6,7 +6,7 @@
 local M = {}
 
 M.config = {
-  notes_dir = vim.fn.expand("$OBSIDIAN_HOME/Personal/Daily/"),
+  notes_dir = vim.fn.expand("$OBSIDIAN_HOME/Personal/Diary/"),
   enable_quote = true,
   quote_api = "https://zenquotes.io/api/today",
   curl_timeout = 3,
