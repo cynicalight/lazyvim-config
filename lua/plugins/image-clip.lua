@@ -6,7 +6,10 @@ return {
     -- or leave it empty to use the default settings
   },
   keys = {
-    -- suggested keymap
-    { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+    {
+      "<leader>h",
+      function() require("cos-upload").paste_and_upload() end,
+      desc = "Paste image & upload to COS",
+    },
   },
 }

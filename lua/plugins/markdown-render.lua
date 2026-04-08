@@ -8,7 +8,7 @@ return {
     opts = {
       preset = 'obsidian',
       code = {
-        position = 'right',
+        -- position = 'right',
         sign = true,
         width = "block",
         right_pad = 1,
