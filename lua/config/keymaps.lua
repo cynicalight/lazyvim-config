@@ -36,3 +36,7 @@ vim.keymap.set("n", "<leader>bp", function()
     vim.notify("Xcodebuild 插件未加载", vim.log.levels.ERROR)
   end
 end, { desc = "Toggle Breakpoint" })
+
+-- buffer move
+vim.keymap.set("n", "<leader>bn", "<cmd>BufferLineMoveNext<cr>")
+vim.keymap.set("n", "<leader>bp", "<cmd>BufferLineMovePrev<cr>")
