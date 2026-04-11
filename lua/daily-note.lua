@@ -73,20 +73,20 @@ local function build_template()
 
   local lines = {}
 
-  -- 导航 (Obsidian wiki link 格式)
-  table.insert(lines, "<< [[" .. yesterday .. "]] | [[" .. tomorrow .. "]] >>")
-  table.insert(lines, "")
+  -- -- 导航 (Obsidian wiki link 格式)
+  -- table.insert(lines, "<< [[" .. yesterday .. "]] | [[" .. tomorrow .. "]] >>")
+  -- table.insert(lines, "")
+  --
+  -- -- 名言占位符
+  -- if M.config.enable_quote then
+  --   quote_line = #lines  -- 0-indexed
+  --   table.insert(lines, "{{QUOTE_LOADING}}")
+  -- end
 
-  -- 名言占位符
-  if M.config.enable_quote then
-    quote_line = #lines  -- 0-indexed
-    table.insert(lines, "{{QUOTE_LOADING}}")
-  end
-
-  table.insert(lines, "")
-
-  -- 分隔线
-  table.insert(lines, "---")
+  -- table.insert(lines, "")
+  --
+  -- -- 分隔线
+  -- table.insert(lines, "---")
 
   -- To-do
   table.insert(lines, "## To-do")
