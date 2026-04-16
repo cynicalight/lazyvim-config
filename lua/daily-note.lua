@@ -92,7 +92,6 @@ local function build_template()
   table.insert(lines, "## To-do")
   table.insert(lines, "")
   table.insert(lines, "AM")
-  table.insert(lines, "- [ ] **ignore social interactions**")
   table.insert(lines, "- [ ] check the e-mail")
   table.insert(lines, "- [ ] check the calender")
   table.insert(lines, "- [ ] ")
@@ -180,6 +179,111 @@ function M.search()
 end
 
 ---------------------------------------------------------------------------
+-- 周记 (Weekly Journal)
+---------------------------------------------------------------------------
+
+-- Get Monday of the week containing the given timestamp
+local function get_monday(timestamp)
+  local wday = tonumber(os.date("%w", timestamp)) -- 0=Sun, 1=Mon, ...
+  if wday == 0 then wday = 7 end
+  return timestamp - (wday - 1) * 86400
+end
+
+local function build_weekly_template(monday_ts)
+  local lines = {}
+  local sunday_ts = monday_ts + 6 * 86400
+  local title = os.date("%Y-%m-%d", monday_ts) .. " ~ " .. os.date("%Y-%m-%d", sunday_ts)
+  table.insert(lines, "# " .. title)
+  table.insert(lines, "")
+
+  local day_names = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" }
+  for i = 0, 6 do
+    local day_ts = monday_ts + i * 86400
+    local heading = os.date("%Y-%m-%d", day_ts) .. " " .. day_names[i + 1]
+    table.insert(lines, "## " .. heading)
+    table.insert(lines, "")
+    table.insert(lines, "### To-do")
+    table.insert(lines, "")
+    table.insert(lines, "AM")
+    table.insert(lines, "- [ ] check the e-mail")
+    table.insert(lines, "- [ ] check the calender")
+    table.insert(lines, "- [ ] ")
+    table.insert(lines, "")
+    table.insert(lines, "PM")
+    table.insert(lines, "- [ ] ")
+    table.insert(lines, "- [ ] exercise")
+    table.insert(lines, "- [ ] **review and reflection**")
+    table.insert(lines, "")
+    table.insert(lines, "---")
+    table.insert(lines, "")
+    table.insert(lines, "### Log")
+    table.insert(lines, "")
+    table.insert(lines, "")
+    if i < 6 then
+      table.insert(lines, "---")
+      table.insert(lines, "")
+    end
+  end
+
+  return lines
+end
+
+local function weekly_filepath(monday_ts)
+  local dir = M.config.notes_dir
+  local sunday_ts = monday_ts + 6 * 86400
+  local filename = os.date("%Y-%m-%d", monday_ts) .. " ~ " .. os.date("%Y-%m-%d", sunday_ts) .. ".md"
+  return dir .. filename
+end
+
+function M.open_weekly(offset_weeks)
+  offset_weeks = offset_weeks or 0
+
+  local dir = M.config.notes_dir
+  vim.fn.mkdir(dir, "p")
+
+  local monday_ts = get_monday(os.time())
+
+  -- If current week's file already exists, create next week's
+  if offset_weeks == 0 and vim.fn.filereadable(weekly_filepath(monday_ts)) == 1 then
+    monday_ts = monday_ts + 7 * 86400
+  else
+    monday_ts = monday_ts + offset_weeks * 7 * 86400
+  end
+
+  local filepath = weekly_filepath(monday_ts)
+  local is_new = vim.fn.filereadable(filepath) == 0
+
+  vim.cmd("edit " .. vim.fn.fnameescape(filepath))
+
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  if is_new then
+    local lines = build_weekly_template(monday_ts)
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+  end
+
+  -- Jump to today's Log section
+  local today_str = os.date("%Y-%m-%d", os.time())
+  local line_count = vim.api.nvim_buf_line_count(bufnr)
+  local found_today = false
+  for i = 0, line_count - 1 do
+    local line = vim.api.nvim_buf_get_lines(bufnr, i, i + 1, false)[1]
+    if not found_today then
+      if line and line:find(today_str, 1, true) and line:match("^## ") then
+        found_today = true
+      end
+    else
+      if line and line:match("^### Log") then
+        local target = math.min(i + 2, line_count - 1)
+        vim.api.nvim_win_set_cursor(0, { target + 1, 0 })
+        vim.cmd("startinsert")
+        return
+      end
+    end
+  end
+end
+
+---------------------------------------------------------------------------
 -- Setup
 ---------------------------------------------------------------------------
 
@@ -193,12 +297,16 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("DailyNoteTomorrow", function() M.open(1) end, {})
   vim.api.nvim_create_user_command("DailyNoteList", function() M.list() end, {})
   vim.api.nvim_create_user_command("DailyNoteSearch", function() M.search() end, {})
+  vim.api.nvim_create_user_command("WeeklyNote", function() M.open_weekly(0) end, {})
+  vim.api.nvim_create_user_command("WeeklyNotePrev", function() M.open_weekly(-1) end, {})
+  vim.api.nvim_create_user_command("WeeklyNoteNext", function() M.open_weekly(1) end, {})
 
   vim.keymap.set("n", "<leader>dn", function() M.open(0) end, { desc = "Daily note" })
   vim.keymap.set("n", "<leader>dy", function() M.open(-1) end, { desc = "Yesterday" })
   vim.keymap.set("n", "<leader>dt", function() M.open(1) end, { desc = "Tomorrow" })
   vim.keymap.set("n", "<leader>dl", M.list, { desc = "List notes" })
   vim.keymap.set("n", "<leader>ds", M.search, { desc = "Search notes" })
+  vim.keymap.set("n", "<leader>dw", function() M.open_weekly(0) end, { desc = "Weekly note" })
 end
 
 return M

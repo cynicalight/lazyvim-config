@@ -11,6 +11,7 @@ return {
             set_light_mode = function()
                 vim.opt.background = "light"
                 vim.cmd("colorscheme gruvbox-material")
+                vim.api.nvim_set_hl(0, "@markup.strong", { fg = "#ea6962", bold = true })
             end,
         },
     },
