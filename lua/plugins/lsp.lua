@@ -26,9 +26,25 @@ return {
             },
             pyright = {},
 
+            vtsls = {
+              settings = {
+                vtsls = {
+                  autoUseWorkspaceTsdk = true,
+                },
+              },
+            },
+
             sourcekit = {
-                filetypes = { "swift", "objective-c", "objective-cpp" },
-                cmd = { "xcrun", "sourcekit-lsp" },
+              filetypes = { "swift", "objective-c", "objective-cpp" },
+              cmd = { "xcrun", "sourcekit-lsp" },
+              root_dir = function(fname)
+                local util = require("lspconfig.util")
+                return util.root_pattern(
+                  "buildServer.json",
+                  "JustRent.xcodeproj",
+                  ".git"
+                )(fname)
+              end,
             },
 
             -- clangd = {

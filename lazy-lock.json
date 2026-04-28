@@ -9,6 +9,7 @@
   "claudecode.nvim": { "branch": "main", "commit": "432121f0f5b9bda041030d1e9e83b7ba3a93dd8f" },
   "codediff.nvim": { "branch": "main", "commit": "832f1ecc5f8b15a44cf7537e31d3266d657775b1" },
   "conform.nvim": { "branch": "master", "commit": "086a40dc7ed8242c03be9f47fbcee68699cc2395" },
+  "csvview.nvim": { "branch": "main", "commit": "7022e18a0fbae9aecf99a3ba02b2a541edc2b8a1" },
   "dashboard-nvim": { "branch": "master", "commit": "62a10d9d55132b338dd742afc3c8a2683f3dd426" },
   "flash.nvim": { "branch": "main", "commit": "fcea7ff883235d9024dc41e638f164a450c14ca2" },
   "friendly-snippets": { "branch": "main", "commit": "6cd7280adead7f586db6fccbd15d2cac7e2188b9" },
