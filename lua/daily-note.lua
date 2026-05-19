@@ -7,6 +7,7 @@ local M = {}
 
 M.config = {
   notes_dir = vim.fn.expand("$OBSIDIAN_HOME/Personal/Diary/"),
+  weekly_dir = vim.fn.expand("$OBSIDIAN_HOME/Personal/Weekly/"),
   enable_quote = true,
   quote_api = "https://zenquotes.io/api/today",
   curl_timeout = 3,
@@ -92,8 +93,7 @@ local function build_template()
   table.insert(lines, "## To-do")
   table.insert(lines, "")
   table.insert(lines, "AM")
-  table.insert(lines, "- [ ] check the e-mail")
-  table.insert(lines, "- [ ] check the calender")
+  table.insert(lines, "- [ ] check the e-mail and calender")
   table.insert(lines, "- [ ] learn EN")
   table.insert(lines, "")
   table.insert(lines, "PM")
@@ -204,8 +204,7 @@ local function build_weekly_template(monday_ts)
     table.insert(lines, "### To-do")
     table.insert(lines, "")
     table.insert(lines, "AM")
-    table.insert(lines, "- [ ] check the e-mail")
-    table.insert(lines, "- [ ] check the calender")
+    table.insert(lines, "- [ ] check the e-mail and calender")
     table.insert(lines, "- [ ] learn EN")
     table.insert(lines, "- [ ] ")
     table.insert(lines, "")
@@ -229,7 +228,9 @@ local function build_weekly_template(monday_ts)
 end
 
 local function weekly_filepath(monday_ts)
-  local dir = M.config.notes_dir
+  local year = os.date("%Y", monday_ts)
+  local month = tonumber(os.date("%m", monday_ts))
+  local dir = M.config.weekly_dir .. year .. "/" .. month .. "/"
   local sunday_ts = monday_ts + 6 * 86400
   local filename = os.date("%Y-%m-%d", monday_ts) .. " ~ " .. os.date("%Y-%m-%d", sunday_ts) .. ".md"
   return dir .. filename
@@ -237,9 +238,6 @@ end
 
 function M.open_weekly(offset_weeks)
   offset_weeks = offset_weeks or 0
-
-  local dir = M.config.notes_dir
-  vim.fn.mkdir(dir, "p")
 
   local monday_ts = get_monday(os.time())
 
@@ -253,6 +251,7 @@ function M.open_weekly(offset_weeks)
   local filepath = weekly_filepath(monday_ts)
   local is_new = vim.fn.filereadable(filepath) == 0
 
+  vim.fn.mkdir(vim.fn.fnamemodify(filepath, ":h"), "p")
   vim.cmd("edit " .. vim.fn.fnameescape(filepath))
 
   local bufnr = vim.api.nvim_get_current_buf()
