@@ -33,3 +33,6 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 vim.g.autoformat = false
+
+vim.g.clipboard = "osc52"
+vim.opt.clipboard = "unnamedplus"
