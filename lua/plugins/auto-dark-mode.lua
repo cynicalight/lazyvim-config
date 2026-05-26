@@ -6,10 +6,11 @@ local function apply_gruvbox()
     vim.api.nvim_set_hl(0, "@markup.strong", { fg = "#ea6962", bold = true })
 end
 
-return {
-    {
+local plugins = {}
+
+if not is_linux then
+    table.insert(plugins, {
         "f-person/auto-dark-mode.nvim",
-        -- enabled = vim.fn.has("mac") == 1,
         opts = {
             update_interval = 1000,
             set_dark_mode = function()
@@ -18,11 +19,15 @@ return {
             end,
             set_light_mode = apply_gruvbox,
         },
-    },
-    -- Linux: auto-dark-mode 已禁用，启动时直接固定为 gruvbox-material (light)
-    is_linux and {
+    })
+end
+
+if is_linux then
+    table.insert(plugins, {
         "sainnhe/gruvbox-material",
         priority = 1000,
         init = apply_gruvbox,
-    },
-}
+    })
+end
+
+return plugins
