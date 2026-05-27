@@ -41,4 +41,3 @@ Press `<leader>h` in Neovim to paste a clipboard image. The image is uploaded to
 
 - `lua/cos-upload.lua` — upload logic (clipboard → temp file → COS → markdown link)
 - `lua/plugins/image-clip.lua` — keybinding (`<leader>h`) and [img-clip.nvim](https://github.com/hakonharnes/img-clip.nvim) plugin spec
-- test
