@@ -33,8 +33,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      -- colorscheme = "catppuccin", -- 想用 gruvbox-material 就改这里
-      colorscheme = "gruvbox-material",
+      colorscheme = "catppuccin-mocha",
     },
   },
 }
