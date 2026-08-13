@@ -1,0 +1,4 @@
+WRN 2026-07-03T11:07:38.770 ?.43598    server_start:197: Failed to start server: operation not permitted: /var/folders/1g/3yj40ngn5b33fs9gg0wzvms00000gn/T/nvim.apple/7rNGNa/nvim.43598.0
+WRN 2026-07-03T11:07:43.251 ?.44360    server_start:197: Failed to start server: operation not permitted: /var/folders/1g/3yj40ngn5b33fs9gg0wzvms00000gn/T/nvim.apple/lygVUS/nvim.44360.0
+WRN 2026-07-03T11:09:21.096 ?.59333    server_start:197: Failed to start server: operation not permitted: /var/folders/1g/3yj40ngn5b33fs9gg0wzvms00000gn/T/nvim.apple/BzdBlf/nvim.59333.0
+WRN 2026-07-03T11:09:48.414 ?.63817    server_start:197: Failed to start server: operation not permitted: /var/folders/1g/3yj40ngn5b33fs9gg0wzvms00000gn/T/nvim.apple/NJKS5k/nvim.63817.0
