@@ -40,3 +40,12 @@ end, { desc = "Toggle Breakpoint" })
 -- buffer move
 vim.keymap.set("n", "<leader>bn", "<cmd>BufferLineMoveNext<cr>")
 vim.keymap.set("n", "<leader>bp", "<cmd>BufferLineMovePrev<cr>")
+
+vim.keymap.set("n", "<leader>yp", function()
+  local entry = require("mini.files").get_fs_entry()
+  if entry then
+    local path = vim.fn.fnamemodify(entry.path, ":.")
+    vim.fn.setreg("+", path)
+    vim.notify("Copied: " .. path)
+  end
+end, { desc = "Copy relative file path" })

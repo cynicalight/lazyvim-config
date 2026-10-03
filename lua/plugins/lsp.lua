@@ -4,6 +4,15 @@ return {
     opts = {
         ---@type lspconfig.options
         servers = {
+            gopls = {
+                settings = {
+                    gopls = {
+                        analyses = {
+                            ST1000 = false,
+                        },
+                    },
+                },
+            },
             marksman = {
                 diagnostics = false,
             },
