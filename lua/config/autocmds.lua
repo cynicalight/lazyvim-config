@@ -6,14 +6,31 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 
--- Disable wrapping for Markdown and enable it for other file types.
+-- Use the full entry path instead of extracting text from mini.files rows.
+vim.api.nvim_create_autocmd("User", {
+  group = vim.api.nvim_create_augroup("mini_files_system_open", { clear = true }),
+  pattern = "MiniFilesBufferCreate",
+  callback = function(args)
+    vim.keymap.set("n", "gx", function()
+      local entry = require("mini.files").get_fs_entry()
+      if entry then
+        vim.ui.open(entry.path)
+      end
+    end, {
+      buffer = args.data.buf_id,
+      desc = "Open with system app",
+    })
+  end,
+})
+
+-- Enable wrapping for all file types.
 -- Reuse LazyVim's group name so its spell-enabling rule stays disabled.
 vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("lazyvim_wrap_spell", { clear = true }),
   pattern = "*",
   callback = function()
-    vim.opt_local.wrap = vim.bo.filetype ~= "markdown"
+    vim.opt_local.wrap = true
   end,
 })
 
