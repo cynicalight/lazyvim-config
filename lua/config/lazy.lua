@@ -21,6 +21,9 @@ require("lazy").setup({
     -- import/override with your plugins
     { import = "plugins" },
   },
+  rocks = { enabled = false },
+  git = { timeout = 90 },
+  concurrency = 6,
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
     -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
@@ -32,7 +35,7 @@ require("lazy").setup({
   },
   install = { colorscheme = { "tokyonight", "habamax" } },
   checker = {
-    enabled = true, -- check for plugin updates periodically
+    enabled = false, -- server: explicit updates only
     notify = false, -- notify on update
   }, -- automatically check for plugin updates
   performance = {

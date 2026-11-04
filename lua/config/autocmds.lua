@@ -25,7 +25,7 @@ vim.api.nvim_create_autocmd("User", {
 
 -- Enable wrapping for all file types.
 -- Reuse LazyVim's group name so its spell-enabling rule stays disabled.
-vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("lazyvim_wrap_spell", { clear = true }),
   pattern = "*",

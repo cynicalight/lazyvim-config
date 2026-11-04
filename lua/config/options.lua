@@ -1,17 +1,4 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
-vim.g.python3_host_prog = "/opt/homebrew/Caskroom/miniconda/base/bin/python"
-
-local magickConfigDir = vim.fn.expand("~/.config/imagemagick")
-local homebrewMagickConfigDir = "/opt/homebrew/etc/ImageMagick-7"
-local currentMagickConfigPath = vim.env.MAGICK_CONFIGURE_PATH
-
-if currentMagickConfigPath and currentMagickConfigPath ~= "" then
-  vim.env.MAGICK_CONFIGURE_PATH = table.concat({ magickConfigDir, homebrewMagickConfigDir, currentMagickConfigPath }, ":")
-else
-  vim.env.MAGICK_CONFIGURE_PATH = table.concat({ magickConfigDir, homebrewMagickConfigDir }, ":")
-end
+vim.g.python3_host_prog = "/usr/bin/python3"
 -- Soft wrap: long lines don't overflow the screen
 vim.opt.wrap = true
 
@@ -36,3 +23,13 @@ vim.g.autoformat = false
 
 vim.g.clipboard = "osc52"
 vim.opt.clipboard = "unnamedplus"
+-- Include TypeScript variables in the LSP symbol picker.
+vim.api.nvim_create_autocmd("VimEnter", {
+  once = true,
+  callback = function()
+    local symbol_kinds = vim.deepcopy(LazyVim.config.kind_filter.default)
+    vim.list_extend(symbol_kinds, { "Variable", "Constant" })
+    LazyVim.config.kind_filter.typescript = symbol_kinds
+    LazyVim.config.kind_filter.typescriptreact = vim.deepcopy(symbol_kinds)
+  end,
+})
