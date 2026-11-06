@@ -21,7 +21,12 @@ vim.opt.expandtab = true
 
 vim.g.autoformat = false
 
-vim.g.clipboard = "osc52"
+-- OSC 52 only over SSH; locally nvim auto-detects pbcopy/pbpaste.
+-- (OSC 52 *paste* needs the terminal to answer a clipboard read, which
+-- Rex doesn't do → "Timed out waiting for a clipboard response".)
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+  vim.g.clipboard = "osc52"
+end
 vim.opt.clipboard = "unnamedplus"
 -- Include TypeScript variables in the LSP symbol picker.
 vim.api.nvim_create_autocmd("VimEnter", {
