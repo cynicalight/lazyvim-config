@@ -21,11 +21,31 @@ vim.opt.expandtab = true
 
 vim.g.autoformat = false
 
--- OSC 52 only over SSH; locally nvim auto-detects pbcopy/pbpaste.
--- (OSC 52 *paste* needs the terminal to answer a clipboard read, which
--- Rex doesn't do → "Timed out waiting for a clipboard response".)
+-- Locally nvim auto-detects pbcopy/pbpaste.
+-- Over SSH: copy via OSC 52 (to the local system clipboard), but paste from
+-- an in-memory cache. OSC 52 *paste* needs the terminal to answer a clipboard
+-- read, which Rex doesn't do → "Timed out waiting for a clipboard response".
+-- To paste text copied outside nvim over SSH, use Cmd+V.
 if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
-  vim.g.clipboard = "osc52"
+  local osc52 = require("vim.ui.clipboard.osc52")
+  local cache = { ["+"] = { { "" }, "v" }, ["*"] = { { "" }, "v" } }
+  local function copy(reg)
+    local send = osc52.copy(reg)
+    return function(lines, regtype)
+      cache[reg] = { lines, regtype }
+      send(lines, regtype)
+    end
+  end
+  local function paste(reg)
+    return function()
+      return cache[reg]
+    end
+  end
+  vim.g.clipboard = {
+    name = "OSC 52 (copy only)",
+    copy = { ["+"] = copy("+"), ["*"] = copy("*") },
+    paste = { ["+"] = paste("+"), ["*"] = paste("*") },
+  }
 end
 vim.opt.clipboard = "unnamedplus"
 -- Include TypeScript variables in the LSP symbol picker.
